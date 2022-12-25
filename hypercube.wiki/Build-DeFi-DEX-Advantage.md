@@ -1,0 +1,47 @@
+# XRexx Solves MEV Problem
+
+
+## What is MEV?
+
+Let's go through an example to better understand how miners take value, why this is a problem, and what can be done to address the issue. 
+
+Let us suppose that the current "true" price of HyperCube (at which it is currently trading in high volumes elsewhere) is $1000, and that there is one offer to sell one HyperCube for anywhere between $900 and $1200, and one offer to buy one HyperCube for anywhere between $800 and $1100 on the market. If there is a sufficiently trustworthy stablecoin, this may be accomplished via offers on the blockchain. If the buyer and seller agreed on a price of $1000, an entirely honest/altruistic trade would go place, while an entirely greedy/dishonest exchange would purchase one HyperCube for $900 and sell it for $1100, pocketing the $200 difference. 
+
+Unless miners or farmers are involved in bookmaking, they have no reputation to uphold and should be presumed to be excessively greedy. This is referred to as "miner extracted value" in blockchains, and it is referred to as "pocketing the spread" in finance.
+
+
+An essential point to remember regarding pricing is that there is no such thing as a really fair price for anything. 
+
+Generally speaking, when someone purchases something, there isn't a lower price they could have purchased the same item for and when someone sells something, there isn't a higher price they could have sold it for. However, there are exceptions to this rule. 
+
+There will always be some noise and slop in the system, and even in theoretically perfect conditions, markets may become very efficient, but not so efficient that the person who put the market together would be unable to remain in business as a result of their efforts. The whole purpose of a marketplace is to figure out what prices "should" be, or at the very least to come up with reasonable estimates of what prices "should" be. 
+
+
+## Centralized Crypto Exchange Will Treat Users Like A Rat
+
+Delegating the responsibility of reporting the 'actual' price of a product does not solve the issue. Even if that individual is "honest," no one person has access to all of the information available on the planet or all of the insights into how to predict future pricing. The vulnerabilities of that person will serve as a direct conduit for market players to be taken advantage of.
+Large bookies play an important role in the markets because, unlike miners and farmers, they have a reputation to preserve and can be relied upon not to pocket the spread and set prices in a manner that is fairly reflective of the entire set of available options and offers. The use of HyperCube offers allows a bookmaker to combine multiple offers into a single unit and present it to the blockchain as a single unit, making it impossible for a farmer to piecemeal remove part of them to their own benefit. 
+
+An exchange that does this may be trusted to a certain extent, but the worst thing that might happen is that they pocket the spread. When it comes to a more conventional trustworthy blockchain exchange, they may just pocket everyone's money or treat deposits as a no-interest loan, investing the funds in high-risk ventures on the back end while keeping the profits.
+## Price Oracle Will Fail Users Trust
+
+The use of price oracles is another method of lowering MEV that works in conjunction with the other methods. (In computer science, entities that convey information that is difficult to discover or calculate are referred to as 'oracles. ') A price oracle provides information about the current exchange rate. To see how this works, we must first grasp what singletons are.
+
+A singleton is an identity that is represented by exactly one coin at any one moment, and it is feasible for coins to verify that they are dealing with the current representation of that identity by performing a transaction validation check. Similar to, but more straightforward than, XRC20 coins. An NFT is nothing more than a singleton in its most basic form. Singletons are also the building blocks of rate-limited wallets, distributed identities, the pool protocol, and price oracles, among other things.
+
+The technical specifics of how singletons are implemented may be found in this document. This feature has already been developed and is being utilized as part of our regular pooling procedure. You may get the source code for how we built a prototype of XRC20 coins, which I first presented here, by visiting this page. As soon as we have updated our XRC20 currency implementation information on XRexx.com, we will update this page.
+
+For as absurd as it may seem, a price oracle with absolutely no security on it other than the fact that it only publishes one price every block is capable of providing considerable resistance to MEV attacks. There may be several price ranges supported by offers, but only the price given by the chosen oracle will be used. Because all transactions in a block in HyperCube occur concurrently, a malevolent miner may manipulate the price by making it too low or too high, but not both at the same time. For example, in the example above, they could either buy one HyperCube for $900 and sell it elsewhere for $1000 to make $100 or buy one HyperCube for $1100 and sell it elsewhere for $100 to also make $100; however, both of these options are preferable to the example with no price oracle, in which they could pull off both and earn $200 without even having to make an external transaction.
+
+
+In an ideal market, you'd like offers to buy and sell to be available at all times in both directions. A successful trader must have access to orders, liquidity to trade with, and trading skill in order to make a profit on a consistent basis while trading actively. Alternatively, it is possible that they do not need trading knowledge and that a bizarre technique will suffice. Automated market makers (AMMs), which are on-chain algorithms that execute trades in accordance with a specified trading strategy, have had tremendous success. In general, they function by accepting deposits of two distinct currencies; in our example, the currencies might be HyperCube and an XRC20 cryptocurrency. In order to obtain an exchange rate, the AMM accepts deposits and withdrawals under the following conditions: (a) If someone makes a deposit, they are given claims to the funds held by the AMM in proportion to their contribution; and (b) If someone makes a withdrawal, they are given claims to the funds held by the AMM in proportion to their contribution; Due to a high volume of order flow and their accessibility, AMMs have performed well in practice, despite the simplicity of the trading approach used by them. It is simple for currency holders to supply them with liquidity while remaining certain that they will not be taken advantage of.
+
+
+## HyperCube Solves Problem Easy
+
+In HyperCube, it is simple to implement AMMs, and this will be a feature in future releases. When combining HyperCube with an XRC20 currency, a pair of singletons is used to hold the deposits (in this instance, one coloured coin and one not), which spend in unison and collaborate on projects. Instead of the singletons remembering all deposits, as is the case in Solidity, it is much more elegant and powerful for the pairing to have its own internal usage XRC20 currency, as is the case in Ethereum. As a result, the AMM just has to remember its total deposits, while the user deposits may be self-custodied and even enable intelligent features such as rate restricted wallets and absurd things such as partnering with other AMMs. The AMM accepts an offer from a user who wishes to deposit money with the AMM. The user makes an offer to exchange some of their own funds for some of the AMM's internal usage token, which is then aggregated with the AMM approving the offer. The only logic the AMM has to do is to receive information from the solution about the new quantities of HyperCube, paired XRC20 coin, and internal use XRC20 coin, and then determine whether or not it is in agreement with that information. Using the AMM for a currency exchange is the same as using it for a token exchange, except that the offer is for the tokens being matched instead of the internal coin.
+
+In reality, though, offers are likely to be a little more difficult to understand. Prices should be determined by the AMM, and offers should be based on that information. Additionally, since various transactions using the AMM would all clash with one another, it is preferable if there is an exchange that combines all of the transactions and presents the one large transaction to the blockchain. Creating a hybrid'mostly' automated market maker that needs a given key to sign off on all transactions while following established business logic in terms of how deposits flow is also feasible. This provides the advantages of a weakly trusted exchange that is less likely to commit fraud and steal everyone's money, while yet being able to assist decrease the spread. As a result, additional parties may participate in providing liquidity to that particular exchange while still having trust that their money are being adequately safeguarded.
+
+The combination of all of the above will result in HyperCube being a much more secure and liquid token marketplace than any other marketplace that has ever existed. It will take a long time to complete, but the effort will be well worth it in the end.
+
